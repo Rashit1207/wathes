@@ -95,15 +95,15 @@ const renderData = (data) => {
         // </div>
         // `;
         let productMarkup = `
-        <div class="col-md-3 product-left">
+        <div data-id ="${elem.id}" class="col-md-3 product-left">
             <div class="product-main simpleCart_shelfItem">
                 <a href="single.html" class="mask"><img class="img-responsive zoom-img" src="${(elem.img )? `images/${elem.img}` : `images/no_image.jpg`}" alt="" /></a>
                 <div class="product-bottom">
                     <h3>${elem.title}</h3>
-                    <h4><a class="item_add" href="#"><i></i></a> <span class=" item_price">$ ${elem.price}</span></h4>
+                    <h4><a class="item_add" href=""><i></i></a> <span class=" item_price">$ ${elem.price}</span></h4>
                 </div>
 
-                ${ elem.old_price != 0 &&
+                ${ (elem.old_price != 0) &&
 
 
                   `  <div class="srch">
@@ -119,6 +119,64 @@ const renderData = (data) => {
     } );
 }
 
+const addToLS = (item) =>{
+  let dataFromLS = localStorage.getItem('products');
+  let arr = [];
+  if (dataFromLS) {
+    arr = JSON.parse(dataFromLS);
+  }
+  arr.push(item);
+  localStorage.setItem('products', JSON.stringify(arr));
+}
+
 const rowData = getData();
 const productsData = transformData(rowData);
 renderData(productsData);
+
+document.querySelector('.product-top .product-one').addEventListener('click', (e) => {
+  e.preventDefault();
+
+  if (e.target.matches('.item_add i')) {
+    const id = e.target.closest('.product-left').dataset.id;
+
+    addToLS(id);
+  }
+
+})
+
+
+// localStorage.setItem('number',5);
+// localStorage.setItem('text','hello world');
+// localStorage.setItem('bool',true);
+// localStorage.setItem('arr',JSON.stringify([1,3,4,5,6]));
+// localStorage.setItem('obj',{name: 'john',age:32});
+// let jsonStr = localStorage.getItem('arr');
+// let data = JSON.parse(jsonStr)
+// console.log(data);
+//JSON = Javascript Object Notatation => ''
+// localStorage.removeItem('text');
+// localStorage.clear();
+// let arr = [1,2,3,4];
+// let jsonArr = JSON.stringify(arr);
+// console.log(jsonArr);
+// let parsedArr = JSON.parse(jsonArr);
+// console.log(parsedArr);
+let arr = ['hello',{name: 'John', age: 32, colors: ['red','blue']}];
+jsonArr = '["hello",{"name": "John", "age": 32, "colors": [ "red","blue"]} ]';
+console.log(JSON.parse(jsonArr));
+// let object = {
+//   code: "??",
+//   name: null,
+//   age: 32
+// }
+// for (let key in object) {
+//   console.log(object[key]);
+// }
+arr = ['red', 'blue', 'orange'];
+// arr.forEach((elem) =>{
+//   console.log(elem);
+// })
+
+// for (const value of arr) {
+//   console.log(value);
+// }
