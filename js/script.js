@@ -105,13 +105,17 @@ const renderData = (data) => {
                     <h4><a class="item_add" href=""><i></i></a> <span class=" item_price">$ ${elem.price}</span></h4>
                 </div>
 
-                ${ (elem.old_price != 0) &&
-
-
+                ${
+                  (elem.old_price != 0) ?
                   `  <div class="srch">
                       <span>- ${Math.round(100 - elem.price * 100 / elem.old_price)} % </span>
                     </div>`
-              }
+                    :
+                    ``
+                }
+
+
+
             </div>
         </div>
         `;
@@ -131,6 +135,11 @@ const addToLS = (item) =>{
   localStorage.setItem('cart', JSON.stringify(arr));
 }
 
+
+
+
+
+
 const rowData = getData();
 const productsData = transformData(rowData);
 localStorage.setItem('productsData',JSON.stringify(productsData));
@@ -144,6 +153,10 @@ document.querySelector('.product-top .product-one').addEventListener('click', (e
     const id = e.target.closest('.product-left').dataset.id;
 
     addToLS(id);
+    doProductsAction(
+      JSON.parse(localStorage.getItem('cart')), JSON.parse(localStorage.getItem('productsData')),
+      'calcSum'
+    );
   }
 
 })
@@ -165,10 +178,10 @@ document.querySelector('.product-top .product-one').addEventListener('click', (e
 // console.log(jsonArr);
 // let parsedArr = JSON.parse(jsonArr);
 // console.log(parsedArr);
-let arr = ['hello',{name: 'John', age: 32, colors: ['red','blue']}];
-jsonArr = '["hello",{"name": "John", "age": 32, "colors": [ "red","blue"]} ]';
-console.log(JSON.parse(jsonArr));
-// let object = {
+// let arr = ['hello',{name: 'John', age: 32, colors: ['red','blue']}];
+// jsonArr = '["hello",{"name": "John", "age": 32, "colors": [ "red","blue"]} ]';
+// console.log(JSON.parse(jsonArr));
+// // let object = {
 //   code: "??",
 //   name: null,
 //   age: 32
@@ -176,7 +189,7 @@ console.log(JSON.parse(jsonArr));
 // for (let key in object) {
 //   console.log(object[key]);
 // }
-arr = ['red', 'blue', 'orange'];
+// arr = ['red', 'blue', 'orange'];
 // arr.forEach((elem) =>{
 //   console.log(elem);
 // })
