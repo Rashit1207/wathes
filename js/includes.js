@@ -309,13 +309,18 @@ document.querySelector('#footer').insertAdjacentHTML('beforeend', footer);
 
 const calcCardCount = () =>{
 	const cart = JSON.parse(localStorage.getItem('cart'));
+
 	document.querySelector('.ckeckout #cart-count').textContent = cart.length;
 }
 
 const doProductsAction = (cart, products, param) => {
 	let sum = 0;
 
-    for (const cartId of cart) {
+	if (cart.length == 0) {
+		localStorage.setItem('cartTotal', sum);
+		document.querySelector('.total .simpleCart_total').textContent = sum;
+	} else {
+		for (const cartId of cart) {
         for (const product of products) {
            if (cartId == product.id) {
 						const id = product.id;
@@ -344,6 +349,9 @@ const doProductsAction = (cart, products, param) => {
            }
         }
     }
+	}
+
+
 }
 const deleteItemFromLS = (id) =>{
 	let cart = localStorage.getItem('cart');
@@ -356,17 +364,21 @@ const deleteItemFromLS = (id) =>{
 		localStorage.setItem('cart',JSON.stringify(cart));
 	}
 }
+let removedItemId;
 document.querySelector('.cart-items').addEventListener('click', (e)=>{
-	if (e.target.matches('.close1')) {
+	if (e.target.matches('.close1') && removedItemId != e.target.parentElement.dataset.id) {
+		removedItemId = e.target.parentElement.dataset.id;
 		deleteItemFromLS(e.target.parentElement.dataset.id);
 
 		$(e.target).parent().fadeOut('slow', function(c) {
 					$(e.target).parent().remove();
-			});
+		});
 
 		doProductsAction(
 			JSON.parse(localStorage.getItem('cart')), JSON.parse(localStorage.getItem('productsData')),
-			'calcSum'
-		);
+			'calcSum');
+
+		calcCardCount();
+
 	}
 })
